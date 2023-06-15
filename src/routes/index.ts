@@ -41,4 +41,16 @@ router.put('/maintenance/coin/:coin/inventory/:quantity', (req: Request, res: Re
   res.sendStatus(200);
 });
 
+
+/*------------------------------------------------------------------
+--------------------------------------------------------------------
+---------Route to buy a product by regular user---------------------
+------------------------------------------------------------------*/
+
+router.post('/user/buy/:product', (req: Request, res: Response) => {
+  vendingMachine.buyProduct(req, res);
+});
+
+
+
 export default router;
