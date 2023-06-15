@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { SuccessResponse, BadRequestResponse } from '../core/ApiResponse';
 
 interface CoinInventory {
   [coin: number]: number;
@@ -50,6 +51,7 @@ class VendingMachine implements RegularUser, MaintenanceUser {
 
   setProductPrice(product: string, price: number) {
     if (this.productPrices.hasOwnProperty(product)) {
+      this.productPrices[product] = price;
     }
   }
 
@@ -76,14 +78,12 @@ class VendingMachine implements RegularUser, MaintenanceUser {
 
       const productCount = this.productInventory[product];
       if (productCount === 0) {
-        res.status(400).json({ message: 'Product is out of stock.' });
-        return;
+        return new BadRequestResponse('Product is out of stock.').send(res);
       }      
 
       const price = this.productPrices[product];
       if (price === 0) {
-        res.status(400).json({ message: 'Product price is not set, contact admin.' });
-        return;
+        return new BadRequestResponse('Product price is not set, contact admin.').send(res);;
       }
 
       const totalPayment = Object.keys(coins).reduce(
@@ -92,21 +92,19 @@ class VendingMachine implements RegularUser, MaintenanceUser {
       );
 
       if (totalPayment < price) {
-        res.status(400).json({ message: 'Insufficient payment. Please insert more coins.' });
-        return;
+        return new BadRequestResponse('Insufficient payment. Please insert more coins.').send(res);
       }
 
       const changeDue = totalPayment - price;
       if (!this.isExactChangeAvailable(changeDue)) {
-        res.status(400).json({ message: 'Exact change is not available. Please insert exact change.' });
-        return;
+        return new BadRequestResponse('Exact change is not available. Please insert exact change.').send(res);
       }
 
       this.productInventory[product]--;
       const changeCoins = this.returnChange(changeDue);
-      res.json({ message: 'Purchase successful. Please collect your product.', change: changeCoins });
+      return new SuccessResponse('Purchase successful. Please collect your product.',{change: changeCoins} ).send(res);
     } else {
-      res.status(400).json({ message: 'Invalid product selection.' });
+      return new BadRequestResponse('Invalid product selection.').send(res);
     }
   }
 
