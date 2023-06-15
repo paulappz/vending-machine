@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/ubuntu/environment/vendingMachine/logs/.04a96ce7eef690f678916f639895379d9a9745d0-audit.json",
+    "files": [
+        {
+            "date": 1686834163188,
+            "name": "/home/ubuntu/environment/vendingMachine/logs/2023-06-15.log",
+            "hash": "e4cb6e69e18c9ce9ddfeef79988d8fe3909c5f89fe3c6763b0d12495ff3efdd0"
+        }
+    ],
+    "hashType": "sha256"
+}
