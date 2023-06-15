@@ -172,3 +172,11 @@
     "message": "Product is out of stock."
     }
     ```
+    
+    * Response Body: 400
+    ```json
+    {
+    "statusCode": "10001",
+    "message": "Exact change is not available. Please insert exact change."
+    }
+    ```
